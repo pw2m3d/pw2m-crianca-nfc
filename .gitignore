@@ -1,0 +1,19 @@
+# Angular / Node
+node_modules/
+dist/
+.angular/
+.vscode/
+
+# Logs
+*.log
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Variáveis locais
+.env
+.env.local
+
+# Angular environments locais com segredos
+src/environments/environment.local.ts

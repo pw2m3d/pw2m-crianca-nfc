@@ -1,0 +1,10 @@
+export const environment = {
+  production: false,
+
+  // Supabase > Project Settings > API
+  supabaseUrl: 'https://SEU-PROJETO.supabase.co',
+
+  // Use a chave pública/publishable (ou anon legacy, se o projeto ainda usar esse formato).
+  // NUNCA coloque a service_role no Angular.
+  supabaseKey: 'SUA_CHAVE_PUBLICA'
+};
