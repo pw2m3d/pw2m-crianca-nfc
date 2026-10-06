@@ -1,0 +1,4 @@
+ALTER TABLE nfc_devices
+ADD COLUMN category VARCHAR(30)
+NOT NULL DEFAULT 'OUTRO'
+AFTER device_name;

@@ -1,0 +1,62 @@
+#### Health
+GET http://localhost:8080/actuator/health
+
+### Register
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Responsável Teste",
+  "email": "teste@pw2m.com.br",
+  "password": "12345678"
+}
+
+#### Login
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "teste@pw2m.com.br",
+  "password": "12345678"
+}
+
+### Depois do login, cole o token abaixo
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZUBwdzJtLmNvbS5iciIsImlhdCI6MTc5MDg3NjMzMSwiZXhwIjoxNzkwOTYyNzMxfQ.VhTScYJdMi-Ia2ObxK3jxlMVhoY3fKfTTPn6uVk7IE4
+
+### Criar criança
+POST http://localhost:8080/api/children
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "fullName": "João Teste",
+  "birthDate": "2019-06-24",
+  "bloodType": "O+",
+  "city": "Cosmópolis",
+  "state": "SP",
+  "publicEnabled": true,
+  "medical": {
+    "allergies": "Penicilina",
+    "conditions": "",
+    "medications": "",
+    "healthPlan": "",
+    "healthPlanNumber": "",
+    "emergencyNotes": "Em caso de emergência, contatar os responsáveis."
+  },
+  "contacts": [
+    {
+      "name": "Responsável Teste",
+      "relation": "Mãe",
+      "phone": "19999999999",
+      "whatsapp": "5519999999999",
+      "priority": 1
+    }
+  ]
+}
+
+### Listar crianças
+GET http://localhost:8080/api/children
+Authorization: Bearer {{token}}
+
+### Ficha pública - substitua o publicToken
+GET http://localhost:8080/api/public/children/COLE_PUBLIC_TOKEN
