@@ -1,10 +1,7 @@
 package br.com.pw2m.nfc.service;
 
 import br.com.pw2m.nfc.dto.ChildDtos;
-import br.com.pw2m.nfc.entity.AccessLog;
-import br.com.pw2m.nfc.entity.Child;
-import br.com.pw2m.nfc.entity.MedicalInfo;
-import br.com.pw2m.nfc.entity.NfcDevice;
+import br.com.pw2m.nfc.entity.*;
 import br.com.pw2m.nfc.exception.NotFoundException;
 import br.com.pw2m.nfc.repository.*;
 import org.springframework.stereotype.Service;
@@ -16,6 +13,8 @@ import java.util.List;
 
 @Service
 public class PublicChildService {
+
+    private static final String UNAVAILABLE = "Esta ficha está indisponível.";
 
     private final ChildRepository children;
     private final EmergencyContactRepository contacts;
@@ -45,15 +44,42 @@ public class PublicChildService {
     }
 
     @Transactional
+    public ChildDtos.PublicChildResponse getByDeviceToken(String deviceToken) {
+        NfcDevice device = devices
+                .findByDeviceTokenIgnoreCase(normalize(deviceToken))
+                .orElseThrow(() -> new NotFoundException(UNAVAILABLE));
+
+        if (!device.isOperationallyActive()) {
+            throw new NotFoundException(UNAVAILABLE);
+        }
+
+        Child child = device.getChild();
+        if (child == null || !child.isPublicEnabled()) {
+            throw new NotFoundException(UNAVAILABLE);
+        }
+
+        log(child, device);
+        return response(child);
+    }
+
+    @Transactional
     public ChildDtos.PublicChildResponse getByDevice(
             String publicToken,
             String deviceToken
     ) {
-        Child child = requirePublic(publicToken);
-
         NfcDevice device = devices
-                .findByDeviceTokenAndChildPublicTokenAndActiveTrue(deviceToken, publicToken)
-                .orElseThrow(() -> new NotFoundException("Tag NFC desativada ou não encontrada."));
+                .findByDeviceTokenIgnoreCase(normalize(deviceToken))
+                .orElseThrow(() -> new NotFoundException(UNAVAILABLE));
+
+        if (!device.isOperationallyActive()) {
+            throw new NotFoundException(UNAVAILABLE);
+        }
+
+        Child child = device.getChild();
+        if (child == null || !child.isPublicEnabled()
+                || !child.getPublicToken().equals(publicToken)) {
+            throw new NotFoundException(UNAVAILABLE);
+        }
 
         log(child, device);
         return response(child);
@@ -109,5 +135,9 @@ public class PublicChildService {
 
     private Integer age(LocalDate birthDate) {
         return birthDate == null ? null : Period.between(birthDate, LocalDate.now()).getYears();
+    }
+
+    private String normalize(String code) {
+        return code == null ? "" : code.trim().toUpperCase();
     }
 }

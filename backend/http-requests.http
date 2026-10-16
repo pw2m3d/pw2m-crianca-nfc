@@ -1,7 +1,7 @@
 #### Health
 GET http://localhost:8080/actuator/health
 
-### Register
+### Register (CUSTOMER)
 POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
@@ -11,7 +11,7 @@ Content-Type: application/json
   "password": "12345678"
 }
 
-#### Login
+### Login
 POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
@@ -20,16 +20,41 @@ Content-Type: application/json
   "password": "12345678"
 }
 
-### Depois do login, cole o token abaixo
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZUBwdzJtLmNvbS5iciIsImlhdCI6MTc5MDg3NjMzMSwiZXhwIjoxNzkwOTYyNzMxfQ.VhTScYJdMi-Ia2ObxK3jxlMVhoY3fKfTTPn6uVk7IE4
+@token = COLE_O_JWT_AQUI
+@adminToken = COLE_O_JWT_ADMIN_AQUI
 
-### Criar criança
+### Fabricar lote (ROLE_ADMIN)
+POST http://localhost:8080/api/admin/devices/manufacture
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "quantity": 1,
+  "category": "CHAVEIRO"
+}
+
+### Ativar chaveiro (código + PIN)
+POST http://localhost:8080/api/devices/claim
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "deviceCode": "PW2M-XXXX-XXXX-XXXX",
+  "activationCode": "123456"
+}
+
+### Meus dispositivos
+GET http://localhost:8080/api/devices
+Authorization: Bearer {{token}}
+
+### Criar pessoa
 POST http://localhost:8080/api/children
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "fullName": "João Teste",
+  "personType": "CHILD",
   "birthDate": "2019-06-24",
   "bloodType": "O+",
   "city": "Cosmópolis",
@@ -54,9 +79,19 @@ Content-Type: application/json
   ]
 }
 
-### Listar crianças
-GET http://localhost:8080/api/children
+### Vincular dispositivo à pessoa
+PUT http://localhost:8080/api/devices/1/assign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "personId": 1,
+  "deviceName": "Chaveiro da escola"
+}
+
+### Desvincular
+PUT http://localhost:8080/api/devices/1/unassign
 Authorization: Bearer {{token}}
 
-### Ficha pública - substitua o publicToken
-GET http://localhost:8080/api/public/children/COLE_PUBLIC_TOKEN
+### Ficha pública pelo código da tag
+GET http://localhost:8080/api/public/devices/PW2M-XXXX-XXXX-XXXX

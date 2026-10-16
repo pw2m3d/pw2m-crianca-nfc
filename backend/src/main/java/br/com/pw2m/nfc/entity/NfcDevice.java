@@ -291,7 +291,20 @@ public class NfcDevice {
     public void setStatus (
             NfcDeviceStatus status
     ) {
+        applyOperationalStatus(status);
+    }
+
+    /**
+     * {@code status} é a fonte da verdade. O boolean {@code active}
+     * permanece só para compatibilidade e segue o status.
+     */
+    public void applyOperationalStatus(NfcDeviceStatus status) {
         this.status = status;
+        this.active = status == NfcDeviceStatus.ACTIVE;
+    }
+
+    public boolean isOperationallyActive() {
+        return this.status == NfcDeviceStatus.ACTIVE;
     }
 
 

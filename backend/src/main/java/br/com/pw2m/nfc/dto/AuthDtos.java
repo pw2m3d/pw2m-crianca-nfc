@@ -22,7 +22,8 @@ public final class AuthDtos {
     public record UserResponse(
             Long id,
             String name,
-            String email
+            String email,
+            String role
     ) {}
 
     public record AuthResponse(

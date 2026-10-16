@@ -1,5 +1,6 @@
 package br.com.pw2m.nfc.dto;
 
+import br.com.pw2m.nfc.entity.PersonType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -48,6 +49,7 @@ public final class ChildDtos {
 
     public record ChildRequest(
             @NotBlank @Size(max = 160) String fullName,
+            PersonType personType,
             LocalDate birthDate,
             @Size(max = 5) String bloodType,
             @Size(max = 500) String photoUrl,
@@ -63,6 +65,7 @@ public final class ChildDtos {
             Long id,
             String publicToken,
             String fullName,
+            PersonType personType,
             Integer ageYears,
             String bloodType,
             boolean publicEnabled
@@ -72,6 +75,7 @@ public final class ChildDtos {
             Long id,
             String publicToken,
             String fullName,
+            PersonType personType,
             LocalDate birthDate,
             Integer ageYears,
             String bloodType,

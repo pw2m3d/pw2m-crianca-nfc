@@ -2,7 +2,9 @@ package br.com.pw2m.nfc.controller;
 
 import br.com.pw2m.nfc.dto.AuthDtos;
 import br.com.pw2m.nfc.service.AuthService;
+
 import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,22 +14,45 @@ public class AuthController {
 
     private final AuthService auth;
 
-    public AuthController(AuthService auth) {
+
+    public AuthController(
+            AuthService auth
+    ) {
         this.auth = auth;
     }
+
+
+    /*
+     * =========================================================
+     * CADASTRO
+     * =========================================================
+     */
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public AuthDtos.AuthResponse register(
-            @Valid @RequestBody AuthDtos.RegisterRequest request
+            @Valid
+            @RequestBody
+            AuthDtos.RegisterRequest request
     ) {
+
         return auth.register(request);
     }
 
+
+    /*
+     * =========================================================
+     * LOGIN
+     * =========================================================
+     */
+
     @PostMapping("/login")
     public AuthDtos.AuthResponse login(
-            @Valid @RequestBody AuthDtos.LoginRequest request
+            @Valid
+            @RequestBody
+            AuthDtos.LoginRequest request
     ) {
+
         return auth.login(request);
     }
 }
