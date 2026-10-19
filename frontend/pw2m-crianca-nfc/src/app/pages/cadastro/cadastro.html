@@ -1,0 +1,125 @@
+<div class="pagina">
+
+    <div class="card">
+
+        <div class="logo-sistema">
+            <img
+                    src="/img/logo-sistema-nfc.png"
+                    alt="PW2M Sistema de Localização NFC">
+        </div>
+
+        <h1>
+            Criar cadastro
+        </h1>
+
+        <p class="subtitulo">
+            Cadastre-se para administrar
+            as informações da criança.
+        </p>
+
+        @if (erro) {
+
+        <div class="mensagem erro">
+
+            {{ erro }}
+
+        </div>
+
+        }
+
+        @if (sucesso) {
+
+        <div class="mensagem sucesso">
+
+            {{ sucesso }}
+
+        </div>
+
+        }
+
+        <form
+            [formGroup]="formulario"
+            (ngSubmit)="cadastrar()">
+
+            <div class="campo">
+
+                <label>
+                    Nome completo
+                </label>
+
+                <input
+                    type="text"
+                    formControlName="nome"
+                    placeholder="Nome do responsável">
+
+            </div>
+
+            <div class="campo">
+
+                <label>
+                    E-mail
+                </label>
+
+                <input
+                    type="email"
+                    formControlName="email"
+                    placeholder="seu@email.com">
+
+            </div>
+
+            <div class="campo">
+
+                <label>
+                    Senha
+                </label>
+
+                <input
+                    type="password"
+                    formControlName="senha"
+                    placeholder="Mínimo 8 caracteres">
+
+            </div>
+
+            <div class="campo">
+
+                <label>
+                    Confirmar senha
+                </label>
+
+                <input
+                    type="password"
+                    formControlName="confirmarSenha">
+
+            </div>
+
+            <button
+                type="submit"
+                [disabled]="carregando">
+
+                @if (carregando) {
+
+                Criando cadastro...
+
+                } @else {
+
+                Criar minha conta
+
+                }
+
+            </button>
+
+        </form>
+
+        <div class="login">
+
+            Já possui cadastro?
+
+            <a routerLink="/login">
+                Entrar
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

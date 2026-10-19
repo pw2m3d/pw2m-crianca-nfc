@@ -1,3 +1,8 @@
+-- ATENÇÃO: este arquivo é apenas referência histórica (equivalente à V1).
+-- Não aplique este SQL para criar o banco.
+-- Fonte da verdade: backend/src/main/resources/db/migration/ (V1 a V4).
+-- V2 categoria NFC, V3 estoque (owner_id, PIN, status), V4 papéis de usuário.
+
 CREATE TABLE users (
     id BIGINT NOT NULL AUTO_INCREMENT,
     full_name VARCHAR(160) NOT NULL,

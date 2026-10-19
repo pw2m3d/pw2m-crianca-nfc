@@ -1,0 +1,8 @@
+ALTER TABLE users
+    ADD COLUMN role VARCHAR(30)
+    NOT NULL DEFAULT 'CUSTOMER'
+    AFTER password_hash;
+
+UPDATE users
+SET role = 'CUSTOMER'
+WHERE role IS NULL;

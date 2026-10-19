@@ -1,0 +1,68 @@
+<div class="pagina-nfc">
+    <header class="cabecalho">
+        <div class="header-brand">
+            <div class="header-textos">
+                <span class="header-marca">PW2M</span>
+                <h1>Estoque NFC</h1>
+                <p>Fabricação de lote. O PIN aparece só nesta tela.</p>
+            </div>
+        </div>
+        <a routerLink="/dashboard" class="voltar-dashboard">Voltar</a>
+    </header>
+
+    <main>
+        @if (erro()) {
+        <div class="erro">{{ erro() }}</div>
+        }
+
+        <section class="novo-dispositivo">
+            <form [formGroup]="formulario" (ngSubmit)="fabricar()">
+                <div class="form-grid">
+                    <div class="campo">
+                        <label for="quantity">Quantidade</label>
+                        <input id="quantity" type="number" formControlName="quantity" min="1" max="500">
+                    </div>
+                    <div class="campo">
+                        <label for="category">Categoria</label>
+                        <select id="category" formControlName="category">
+                            @for (item of categorias; track item) {
+                            <option [value]="item">{{ item }}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-acoes">
+                    <button type="submit" class="adicionar" [disabled]="salvando()">
+                        {{ salvando() ? 'Fabricando...' : 'Fabricar' }}
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        @if (resultado().length > 0) {
+        <section>
+            <p>Guarde os PINs. Eles não serão mostrados de novo.</p>
+            <div class="tabela-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>PIN</th>
+                        <th>Categoria</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @for (item of resultado(); track item.id) {
+                    <tr>
+                        <td><code>{{ item.deviceCode }}</code></td>
+                        <td><code>{{ item.activationCode }}</code></td>
+                        <td>{{ item.category }}</td>
+                    </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        }
+    </main>
+</div>

@@ -4,11 +4,15 @@ import br.com.pw2m.nfc.dto.ChildDtos;
 import br.com.pw2m.nfc.entity.Child;
 import br.com.pw2m.nfc.entity.EmergencyContact;
 import br.com.pw2m.nfc.entity.MedicalInfo;
+import br.com.pw2m.nfc.entity.NfcDevice;
+import br.com.pw2m.nfc.entity.NfcDeviceStatus;
+import br.com.pw2m.nfc.entity.PersonType;
 import br.com.pw2m.nfc.entity.UserAccount;
 import br.com.pw2m.nfc.exception.NotFoundException;
 import br.com.pw2m.nfc.repository.ChildRepository;
 import br.com.pw2m.nfc.repository.EmergencyContactRepository;
 import br.com.pw2m.nfc.repository.MedicalInfoRepository;
+import br.com.pw2m.nfc.repository.NfcDeviceRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,15 +26,18 @@ public class ChildService {
     private final ChildRepository children;
     private final EmergencyContactRepository contacts;
     private final MedicalInfoRepository medical;
+    private final NfcDeviceRepository devices;
 
     public ChildService(
             ChildRepository children,
             EmergencyContactRepository contacts,
-            MedicalInfoRepository medical
+            MedicalInfoRepository medical,
+            NfcDeviceRepository devices
     ) {
         this.children = children;
         this.contacts = contacts;
         this.medical = medical;
+        this.devices = devices;
     }
 
     @Transactional(readOnly = true)
@@ -81,7 +88,16 @@ public class ChildService {
     @Transactional
     public void delete(Long childId, UserAccount owner) {
         Child child = requireOwned(childId, owner);
+        releaseDevices(child);
         children.delete(child);
+    }
+
+    private void releaseDevices(Child child) {
+        for (NfcDevice device : devices.findAllByChildIdOrderByCreatedAtDesc(child.getId())) {
+            device.setChild(null);
+            device.applyOperationalStatus(NfcDeviceStatus.CLAIMED);
+            devices.save(device);
+        }
     }
 
     @Transactional(readOnly = true)
@@ -92,6 +108,7 @@ public class ChildService {
 
     private void apply(Child child, ChildDtos.ChildRequest request) {
         child.setFullName(request.fullName().trim());
+        child.setPersonType(request.personType() == null ? PersonType.CHILD : request.personType());
         child.setBirthDate(request.birthDate());
         child.setBloodType(blankToNull(request.bloodType()));
         child.setPhotoUrl(blankToNull(request.photoUrl()));
@@ -155,6 +172,7 @@ public class ChildService {
                 child.getId(),
                 child.getPublicToken(),
                 child.getFullName(),
+                child.getPersonType(),
                 age(child.getBirthDate()),
                 child.getBloodType(),
                 child.isPublicEnabled()
@@ -181,6 +199,7 @@ public class ChildService {
                 child.getId(),
                 child.getPublicToken(),
                 child.getFullName(),
+                child.getPersonType(),
                 child.getBirthDate(),
                 age(child.getBirthDate()),
                 child.getBloodType(),

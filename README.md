@@ -1,167 +1,167 @@
-# PW2M Criança NFC — Angular + Java 25 + Spring Boot + MySQL
+# PW2M Criança NFC
 
-Projeto-base para substituir o Supabase por uma API própria.
+Chaveiro NFC vendido pela PW2M: o responsável ativa o produto com um PIN, vincula a uma pessoa protegida e a tag abre uma ficha de emergência somente leitura.
 
 ## Arquitetura
 
 ```text
-Angular 22
-   ↓ HTTPS / JSON
-Java 25 + Spring Boot 4.1.1
-   ↓ JPA / Hibernate
+frontend/pw2m-crianca-nfc  (Angular 22)
+        ↓ HTTPS / JSON + JWT
+backend  (Java 25 + Spring Boot 4.1.1)
+        ↓ JPA / Flyway
 MySQL 8.4+
-   ↓
+        ↓ (opcional)
 Oracle Cloud
 ```
 
-O GitHub fica responsável pelo versionamento do código. O banco e a API podem ser publicados na Oracle Cloud.
+Pastas:
 
-## O que já está implementado no backend
+| Pasta | Função |
+| --- | --- |
+| `backend/` | API Spring Boot |
+| `frontend/pw2m-crianca-nfc/` | Aplicação Angular |
+| `frontend-integration/` | Snippets antigos (não usar) |
+| `database/` | Referência; a fonte da verdade é o Flyway |
+| `deploy/oracle/` | Exemplo de publicação |
 
-- cadastro de responsável;
-- login por e-mail e senha;
-- senha armazenada com BCrypt;
-- autenticação JWT;
-- cadastro, consulta, alteração e exclusão de criança;
-- dados médicos;
-- contatos de emergência;
-- token público permanente para o NFC;
-- endpoint público somente leitura;
-- cadastro/desativação de tags NFC adicionais;
-- registro básico de acessos públicos;
-- CORS configurável;
-- migrations Flyway;
-- MySQL;
-- endpoint `/actuator/health`.
-
-## Rotas principais
+## Fluxo comercial
 
 ```text
-POST   /api/auth/register
-POST   /api/auth/login
+ADMIN fabrica lote  →  código + PIN na embalagem
+        ↓
+cliente registra / faz login  (papel CUSTOMER)
+        ↓
+POST /api/devices/claim  (deviceCode + PIN)
+        ↓
+cadastra a pessoa protegida
+        ↓
+PUT /api/devices/{id}/assign
+        ↓
+scan da tag  →  GET /api/public/devices/{deviceToken}
+```
 
+Papéis:
+
+- **CUSTOMER** — cadastro público (`POST /api/auth/register`). Ativa chaveiros, cadastra pessoas e vincula tags.
+- **ADMIN** — não nasce pelo cadastro. Defina `ADMIN_EMAIL` e `ADMIN_PASSWORD` na subida da API, ou atualize `users.role` no MySQL. Fabrica lotes em `POST /api/admin/devices/manufacture`.
+
+## Subir localmente
+
+Requisitos: Java 25, Maven 3.6.3+, Node 22+, Docker Desktop (MySQL).
+
+```bash
+docker compose up -d mysql
+cd backend
+mvn spring-boot:run
+```
+
+MySQL local: `localhost:3306`, banco `pw2m_nfc`, usuário `pw2m`, senha `pw2m_dev`.
+
+```bash
+cd frontend/pw2m-crianca-nfc
+npm install
+npm start
+```
+
+Angular: `http://localhost:4200`  
+API: `http://localhost:8080`  
+Saúde: `http://localhost:8080/actuator/health`
+
+Primeiro administrador (opcional, só em máquina controlada):
+
+```text
+ADMIN_EMAIL=admin@pw2m.com.br
+ADMIN_PASSWORD=uma-senha-forte
+ADMIN_NAME=Administrador PW2M
+```
+
+## Produção
+
+```text
+SPRING_PROFILES_ACTIVE=prod
+DB_URL=
+DB_USERNAME=
+DB_PASSWORD=
+JWT_SECRET_BASE64=
+CORS_ALLOWED_ORIGINS=https://seu-dominio.com.br
+```
+
+O profile `prod` exige as variáveis acima, desliga Swagger e expõe só `/actuator/health`. Não grave senhas nem JWT no GitHub. Detalhes em [deploy/oracle/README_ORACLE.md](deploy/oracle/README_ORACLE.md).
+
+## Esquema do banco
+
+Não edite `database/schema.sql` para aplicar o banco. Use as migrations em `backend/src/main/resources/db/migration/` (V1 a V4: usuários, pessoas, NFC, estoque, papéis).
+
+## Rotas da API
+
+Autenticação:
+
+```text
+POST /api/auth/register
+POST /api/auth/login
+```
+
+Pessoas protegidas (JWT):
+
+```text
 GET    /api/children
 POST   /api/children
 GET    /api/children/{id}
 PUT    /api/children/{id}
 DELETE /api/children/{id}
-
-POST   /api/children/{id}/devices
+GET    /api/children/{id}/devices
 PATCH  /api/children/{id}/devices/{deviceId}/toggle
-
-GET    /api/public/children/{publicToken}
-GET    /api/public/children/{publicToken}/device/{deviceToken}
 ```
 
-A rota pública NÃO retorna endereço residencial, e-mail, senha ou IDs administrativos do responsável.
-
-## Requisitos locais
-
-- Java 25
-- Maven 3.6.3+
-- Docker Desktop (opcional, recomendado para subir MySQL local)
-- Angular já pode continuar no projeto existente
-
-Spring Boot 4.1.1 suporta Java 25.
-
-## 1. Subir o MySQL local
-
-Na raiz:
-
-```bash
-docker compose up -d mysql
-```
-
-Banco local:
+Dispositivos do cliente (JWT):
 
 ```text
-host: localhost
-porta: 3306
-database: pw2m_nfc
-usuário: pw2m
-senha: pw2m_dev
+POST /api/devices/claim
+GET  /api/devices
+GET  /api/devices/{deviceId}
+PUT  /api/devices/{deviceId}/assign
+PUT  /api/devices/{deviceId}/unassign
 ```
 
-## 2. Rodar a API
+Estoque (JWT + ROLE_ADMIN):
 
-Entre:
+```text
+POST /api/admin/devices/manufacture
+```
+
+Público (sem login):
+
+```text
+GET /api/public/devices/{deviceToken}
+GET /api/public/children/{publicToken}
+GET /api/public/children/{publicToken}/device/{deviceToken}
+```
+
+A ficha pública não devolve endereço, e-mail, senha nem IDs do responsável. A URL gravada na tag na fabricação deve ser a do `deviceToken`.
+
+## Angular
+
+Rotas principais:
+
+```text
+/login
+/cadastro
+/dashboard
+/dispositivos
+/criancas/nova
+/criancas/:id/editar
+/criancas/:id/nfcs
+/p/:token
+/d/:deviceToken
+```
+
+`environment.apiUrl` aponta para `http://localhost:8080/api`.
+
+## Testes
 
 ```bash
 cd backend
+mvn test
 ```
 
-Execute:
-
-```bash
-mvn spring-boot:run
-```
-
-API:
-
-```text
-http://localhost:8080
-```
-
-Teste:
-
-```text
-http://localhost:8080/actuator/health
-```
-
-## 3. Testar cadastro
-
-```bash
-curl -X POST http://localhost:8080/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d "{\"name\":\"Responsavel Teste\",\"email\":\"teste@pw2m.com.br\",\"password\":\"12345678\"}"
-```
-
-A resposta contém um JWT.
-
-## 4. Integração com seu Angular existente
-
-Abra:
-
-```text
-frontend-integration/README_ANGULAR.md
-```
-
-Os arquivos desta pasta substituem o uso do Supabase no frontend.
-
-## 5. Produção
-
-Use o profile:
-
-```text
-SPRING_PROFILES_ACTIVE=prod
-```
-
-e configure as variáveis:
-
-```text
-DB_URL
-DB_USERNAME
-DB_PASSWORD
-JWT_SECRET_BASE64
-CORS_ALLOWED_ORIGINS
-```
-
-Nunca coloque senha do banco ou `JWT_SECRET_BASE64` no GitHub.
-
-## NFC
-
-Cada criança recebe um `publicToken` no primeiro cadastro.
-
-Exemplo:
-
-```text
-0f75dbb5-4aef-4801-8cd9-70e763db09a1
-```
-
-O Angular pode usar:
-
-```text
-https://nfc.seudominio.com/p/0f75dbb5-4aef-4801-8cd9-70e763db09a1
-```
-
-Esse link é gravado uma vez na tag. Mesmo que o responsável altere telefone, alergias ou medicamentos, o token permanece igual.
+Os testes de API usam Testcontainers (Docker). Sem Docker, essa suíte não sobe.

@@ -1,0 +1,91 @@
+<div class="pagina-nfc">
+    <header class="cabecalho">
+        <div class="header-brand">
+            <div class="logo-box">
+                <img src="/img/logo-sistema-nfc.png" alt="PW2M" class="header-logo">
+            </div>
+            <div class="header-textos">
+                <span class="header-marca">PW2M</span>
+                <h1>Meus chaveiros</h1>
+                <p>Ative o produto com o código e o PIN da embalagem.</p>
+            </div>
+        </div>
+        <a routerLink="/dashboard" class="voltar-dashboard">Voltar ao painel</a>
+    </header>
+
+    <main>
+        @if (erro()) {
+        <div class="erro">{{ erro() }}</div>
+        }
+        @if (ok()) {
+        <div class="intro">{{ ok() }}</div>
+        }
+
+        <section class="novo-dispositivo">
+            <div class="secao-cabecalho">
+                <div>
+                    <span class="secao-label">ATIVAÇÃO</span>
+                    <h2>Ativar chaveiro</h2>
+                    <p>Informe o código impresso e o PIN secreto.</p>
+                </div>
+            </div>
+
+            <form [formGroup]="formulario" (ngSubmit)="ativar()">
+                <div class="form-grid">
+                    <div class="campo">
+                        <label for="deviceCode">Código do dispositivo</label>
+                        <input id="deviceCode" type="text" formControlName="deviceCode" placeholder="PW2M-XXXX-XXXX-XXXX">
+                    </div>
+                    <div class="campo">
+                        <label for="activationCode">PIN</label>
+                        <input id="activationCode" type="password" formControlName="activationCode" placeholder="6 dígitos">
+                    </div>
+                </div>
+                <div class="form-acoes">
+                    <button type="submit" class="adicionar" [disabled]="salvando()">
+                        {{ salvando() ? 'Ativando...' : 'Ativar' }}
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        @if (carregando()) {
+        <div class="carregando"><span>Carregando...</span></div>
+        } @else {
+        <section>
+            @if (lista().length === 0) {
+            <p>Nenhum chaveiro ativado nesta conta.</p>
+            } @else {
+            <div class="tabela-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Código</th>
+                        <th>Status</th>
+                        <th>Pessoa</th>
+                        <th>Link</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @for (item of lista(); track item.id) {
+                    <tr>
+                        <td>{{ item.deviceName }}</td>
+                        <td><code>{{ item.deviceCode }}</code></td>
+                        <td>{{ item.status }}</td>
+                        <td>{{ item.personName || '—' }}</td>
+                        <td>
+                            @if (item.status === 'ACTIVE') {
+                            <a [routerLink]="['/d', item.deviceCode]">Ficha</a>
+                            }
+                        </td>
+                    </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+            }
+        </section>
+        }
+    </main>
+</div>

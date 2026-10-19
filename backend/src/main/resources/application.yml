@@ -21,9 +21,14 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health
 
 app:
+  admin:
+    email: ${ADMIN_EMAIL:}
+    password: ${ADMIN_PASSWORD:}
+    name: ${ADMIN_NAME:Administrador PW2M}
+
   jwt:
     # Apenas desenvolvimento local. Em produção application-prod.yml exige variável.
     secret-base64: ${JWT_SECRET_BASE64:UFcyTS1ORkMtREVWLUpXVC1TRUNSRVQtS0VZLTIwMjYtMDEyMzQ1Njc4OTA=}

@@ -1,0 +1,1411 @@
+.dashboard {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8fafc 0%,
+      #f4f6fa 100%
+    );
+
+  color: #18181b;
+}
+
+
+/* =========================================
+   CABEÇALHO
+   ========================================= */
+
+.cabecalho {
+  min-height: 92px;
+
+  background:
+    rgba(255, 255, 255, 0.96);
+
+  padding:
+    14px 5%;
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  gap: 30px;
+
+  border-bottom:
+    1px solid #e7e9ee;
+
+  box-shadow:
+    0 1px 8px
+    rgba(15, 23, 42, 0.035);
+}
+
+
+.header-brand {
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 17px;
+
+  min-width: 0;
+}
+
+
+/* LOGO */
+
+.logo-box {
+  width: 70px;
+  height: 70px;
+
+  flex:
+    0 0 70px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  overflow: hidden;
+
+  border-radius:
+    17px;
+
+  background:
+    #ffffff;
+}
+
+
+.header-logo {
+  width: 100%;
+  height: 100%;
+
+  object-fit:
+    contain;
+
+  display: block;
+}
+
+
+/* TEXTOS */
+
+.header-textos {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  justify-content:
+    center;
+}
+
+
+.header-marca {
+  margin-bottom:
+    3px;
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    2px;
+
+  color:
+    #d62d35;
+}
+
+
+.header-titulo {
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(
+      21px,
+      2.2vw,
+      30px
+    );
+
+  line-height:
+    1.08;
+
+  font-weight:
+    600;
+
+  letter-spacing:
+    -0.4px;
+
+  color:
+    #111827;
+}
+
+/* SAIR */
+
+.sair {
+  min-height:
+    42px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap: 8px;
+
+  padding:
+    9px 15px;
+
+  border:
+    1px solid #e4e4e7;
+
+  border-radius:
+    10px;
+
+  background:
+    #ffffff;
+
+  color:
+    #52525b;
+
+  font-weight:
+    600;
+
+  cursor:
+    pointer;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+
+.sair svg {
+  width:
+    17px;
+
+  height:
+    17px;
+
+  fill:
+    none;
+
+  stroke:
+    currentColor;
+
+  stroke-width:
+    2;
+
+  stroke-linecap:
+    round;
+
+  stroke-linejoin:
+    round;
+}
+
+
+.sair:hover {
+  background:
+    #f8fafc;
+
+  border-color:
+    #d4d4d8;
+
+  color:
+    #18181b;
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================
+   CONTEÚDO PRINCIPAL
+   ========================================= */
+
+main {
+  width:
+    min(
+      1200px,
+      92%
+    );
+
+  flex:
+    1;
+
+  margin:
+    42px auto;
+}
+
+
+/* =========================================
+   TÍTULO
+   ========================================= */
+
+.titulo {
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    flex-end;
+
+  gap:
+    25px;
+
+  margin-bottom:
+    27px;
+}
+
+
+.secao-label {
+  display:
+    inline-block;
+
+  margin-bottom:
+    7px;
+
+  font-size:
+    10px;
+
+  letter-spacing:
+    1.7px;
+
+  font-weight:
+    800;
+
+  color:
+    #d62d35;
+}
+
+
+.titulo h2 {
+  margin:
+    0 0 6px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    31px;
+
+  font-weight:
+    600;
+
+  letter-spacing:
+    -0.4px;
+
+  color:
+    #111827;
+}
+
+
+.titulo p {
+  margin:
+    0;
+
+  font-size:
+    14px;
+
+  color:
+    #71717a;
+}
+
+
+/* NOVA CRIANÇA */
+
+.novo {
+  min-height:
+    43px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    8px;
+
+  padding:
+    11px 17px;
+
+  border-radius:
+    10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #db3038,
+      #c9252d
+    );
+
+  color:
+    #ffffff;
+
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+
+  text-decoration:
+    none;
+
+  white-space:
+    nowrap;
+
+  box-shadow:
+    0 5px 14px
+    rgba(
+      214,
+      45,
+      53,
+      0.18
+    );
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
+}
+
+
+.novo svg {
+  width:
+    18px;
+
+  height:
+    18px;
+
+  fill:
+    none;
+
+  stroke:
+    currentColor;
+
+  stroke-width:
+    2;
+
+  stroke-linecap:
+    round;
+
+  stroke-linejoin:
+    round;
+}
+
+
+.novo:hover {
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 7px 18px
+    rgba(
+      214,
+      45,
+      53,
+      0.23
+    );
+
+  filter:
+    brightness(0.98);
+}
+
+
+/* =========================================
+   ERRO
+   ========================================= */
+
+.erro {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  margin-bottom:
+    20px;
+
+  padding:
+    14px 16px;
+
+  border:
+    1px solid #fecdd3;
+
+  border-radius:
+    11px;
+
+  background:
+    #fff1f2;
+
+  color:
+    #991b1b;
+}
+
+
+.erro svg {
+  width:
+    19px;
+
+  height:
+    19px;
+
+  flex:
+    0 0 19px;
+
+  fill:
+    none;
+
+  stroke:
+    currentColor;
+
+  stroke-width:
+    2;
+
+  stroke-linecap:
+    round;
+
+  stroke-linejoin:
+    round;
+}
+
+
+/* =========================================
+   CARDS
+   ========================================= */
+
+.card {
+  background:
+    #ffffff;
+
+  padding:
+    28px;
+
+  border:
+    1px solid
+    #eef0f3;
+
+  border-radius:
+    16px;
+
+  box-shadow:
+    0 8px 30px
+    rgba(
+      15,
+      23,
+      42,
+      0.04
+    );
+}
+
+
+/* CARREGANDO */
+
+.carregando-card {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  color:
+    #71717a;
+}
+
+
+.spinner {
+  width:
+    20px;
+
+  height:
+    20px;
+
+  border:
+    2px solid
+    #e4e4e7;
+
+  border-top-color:
+    #d62d35;
+
+  border-radius:
+    50%;
+
+  animation:
+    girar 0.7s
+    linear infinite;
+}
+
+
+@keyframes girar {
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+
+}
+
+
+/* =========================================
+   VAZIO
+   ========================================= */
+
+.vazio {
+  max-width:
+    600px;
+
+  margin:
+    45px auto;
+
+  padding:
+    45px;
+
+  text-align:
+    center;
+}
+
+
+.vazio-icone {
+  width:
+    62px;
+
+  height:
+    62px;
+
+  margin:
+    0 auto 18px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border-radius:
+    16px;
+
+  background:
+    #fff1f2;
+
+  color:
+    #d62d35;
+}
+
+
+.vazio-icone svg {
+  width:
+    30px;
+
+  height:
+    30px;
+
+  fill:
+    none;
+
+  stroke:
+    currentColor;
+
+  stroke-width:
+    1.8;
+
+  stroke-linecap:
+    round;
+
+  stroke-linejoin:
+    round;
+}
+
+
+.vazio h3 {
+  margin:
+    0 0 8px;
+
+  font-size:
+    21px;
+}
+
+
+.vazio p {
+  margin:
+    0 auto 22px;
+
+  max-width:
+    430px;
+
+  color:
+    #71717a;
+
+  line-height:
+    1.5;
+}
+
+
+/* =========================================
+   TABELA
+   ========================================= */
+
+.tabela-wrapper {
+  width:
+    100%;
+
+  overflow-x:
+    auto;
+
+  background:
+    #ffffff;
+
+  border:
+    1px solid
+    #eaecf0;
+
+  border-radius:
+    16px;
+
+  box-shadow:
+    0 9px 30px
+    rgba(
+      15,
+      23,
+      42,
+      0.045
+    );
+}
+
+
+.tabela-criancas {
+  width:
+    100%;
+
+  min-width:
+    950px;
+
+  border-collapse:
+    collapse;
+}
+
+
+.tabela-criancas thead {
+  background:
+    #fafafa;
+}
+
+
+.tabela-criancas th {
+  padding:
+    14px 17px;
+
+  text-align:
+    left;
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.35px;
+
+  text-transform:
+    uppercase;
+
+  color:
+    #626872;
+
+  border-bottom:
+    1px solid
+    #e9eaed;
+
+  white-space:
+    nowrap;
+}
+
+
+.tabela-criancas td {
+  padding:
+    15px 17px;
+
+  vertical-align:
+    middle;
+
+  border-bottom:
+    1px solid
+    #f0f1f3;
+}
+
+
+.tabela-criancas tbody tr {
+  transition:
+    background 0.15s ease;
+}
+
+
+.tabela-criancas tbody tr:hover {
+  background:
+    #fcfcfd;
+}
+
+
+.tabela-criancas tbody tr:last-child td {
+  border-bottom:
+    0;
+}
+
+
+/* =========================================
+   CRIANÇA
+   ========================================= */
+
+.crianca-info {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    11px;
+}
+
+
+.avatar {
+  width:
+    39px;
+
+  height:
+    39px;
+
+  flex:
+    0 0 39px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border-radius:
+    11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eaf6ff,
+      #fff1f5
+    );
+
+  color:
+    #d62d35;
+
+  font-weight:
+    800;
+}
+
+
+.crianca-info > div:last-child {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    3px;
+}
+
+
+.nome {
+  color:
+    #18181b;
+
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+
+  white-space:
+    nowrap;
+}
+
+
+.crianca-info small {
+  font-size:
+    11px;
+
+  color:
+    #a1a1aa;
+}
+
+
+/* =========================================
+   IDADE / SANGUE
+   ========================================= */
+
+.idade {
+  white-space:
+    nowrap;
+}
+
+
+.tipo-sanguineo {
+  font-weight:
+    700;
+
+  color:
+    #b91c1c;
+}
+
+
+.muted {
+  color:
+    #a1a1aa;
+
+  font-size:
+    13px;
+}
+
+
+/* =========================================
+   STATUS
+   ========================================= */
+
+.status {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    6px;
+
+  padding:
+    5px 9px;
+
+  border-radius:
+    999px;
+
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+
+  white-space:
+    nowrap;
+}
+
+
+.status-dot {
+  width:
+    6px;
+
+  height:
+    6px;
+
+  border-radius:
+    50%;
+
+  background:
+    currentColor;
+}
+
+
+.status.ativo {
+  background:
+    #dcfce7;
+
+  color:
+    #166534;
+}
+
+
+.status.inativo {
+  background:
+    #f4f4f5;
+
+  color:
+    #71717a;
+}
+
+
+/* =========================================
+   TOKEN
+   ========================================= */
+
+.token code {
+  display:
+    inline-block;
+
+  max-width:
+    245px;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+  padding:
+    6px 8px;
+
+  border-radius:
+    6px;
+
+  background:
+    #f6f7f9;
+
+  color:
+    #52525b;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  font-size:
+    11px;
+}
+
+
+/* =========================================
+   AÇÕES
+   ========================================= */
+
+.acoes-coluna {
+  text-align:
+    center !important;
+}
+
+
+.acoes {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    7px;
+}
+
+
+.botao-acao {
+  width:
+    36px;
+
+  height:
+    36px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    0;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:
+    9px;
+
+  text-decoration:
+    none;
+
+  cursor:
+    pointer;
+
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+
+.botao-acao svg {
+  width:
+    17px;
+
+  height:
+    17px;
+
+  fill:
+    none;
+
+  stroke:
+    currentColor;
+
+  stroke-width:
+    2;
+
+  stroke-linecap:
+    round;
+
+  stroke-linejoin:
+    round;
+
+  pointer-events:
+    none;
+}
+
+
+.botao-acao:hover {
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 4px 10px
+    rgba(
+      0,
+      0,
+      0,
+      0.07
+    );
+}
+
+
+/* EDITAR */
+
+.botao-acao.editar {
+  background:
+    #eff6ff;
+
+  color:
+    #2563eb;
+
+  border-color:
+    #dbeafe;
+}
+
+
+.botao-acao.editar:hover {
+  background:
+    #dbeafe;
+}
+
+
+/* VISUALIZAR */
+
+.botao-acao.visualizar {
+  background:
+    #f0fdf4;
+
+  color:
+    #16a34a;
+
+  border-color:
+    #dcfce7;
+}
+
+
+.botao-acao.visualizar:hover {
+  background:
+    #dcfce7;
+}
+
+
+/* EXCLUIR */
+
+.botao-acao.excluir {
+  background:
+    #fff1f2;
+
+  color:
+    #dc2626;
+
+  border-color:
+    #ffe4e6;
+}
+
+
+.botao-acao.excluir:hover {
+  background:
+    #ffe4e6;
+}
+
+
+/* =========================================
+   RODAPÉ
+   ========================================= */
+
+.rodape {
+  display:
+    flex;
+
+  justify-content:
+    center;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  padding:
+    25px 20px;
+
+  color:
+    #a1a1aa;
+
+  font-size:
+    11px;
+
+  border-top:
+    1px solid
+    #eceef1;
+}
+
+
+.rodape > span:first-child {
+  color:
+    #d62d35;
+
+  font-weight:
+    800;
+}
+
+
+/* =========================================
+   RESPONSIVO
+   ========================================= */
+
+@media (
+  max-width: 800px
+) {
+
+  .cabecalho {
+    padding:
+      13px 4%;
+
+    gap:
+      15px;
+  }
+
+
+  .logo-box {
+    width:
+      58px;
+
+    height:
+      58px;
+
+    flex-basis:
+      58px;
+
+    border-radius:
+      14px;
+  }
+
+
+  .header-subtitulo {
+    display:
+      none;
+  }
+
+
+  .header-titulo {
+    font-size:
+      19px;
+  }
+
+.botao-acao.nfc {
+  background: #f5f3ff;
+  color: #7c3aed;
+
+  border-color: #ede9fe;
+}
+
+.botao-acao.nfc:hover {
+  background: #ede9fe;
+}
+
+
+  .sair span {
+    display:
+      none;
+  }
+
+
+  .sair {
+    width:
+      41px;
+
+    height:
+      41px;
+
+    padding:
+      0;
+  }
+
+
+  main {
+    width:
+      94%;
+
+    margin:
+      28px auto;
+  }
+
+
+  .titulo {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+
+  .titulo h2 {
+    font-size:
+      27px;
+  }
+
+
+  .novo {
+    width:
+      100%;
+
+    box-sizing:
+      border-box;
+  }
+
+
+  .tabela-wrapper {
+    border-radius:
+      12px;
+  }
+
+
+  .rodape {
+    flex-wrap:
+      wrap;
+  }
+
+}
+
+
+@media (
+  max-width: 480px
+) {
+
+  .cabecalho {
+    align-items:
+      center;
+  }
+
+
+  .logo-box {
+    width:
+      50px;
+
+    height:
+      50px;
+
+    flex-basis:
+      50px;
+  }
+
+
+  .header-brand {
+    gap:
+      11px;
+  }
+
+
+  .header-titulo {
+    font-size:
+      16px;
+
+    line-height:
+      1.15;
+  }
+
+
+  .header-marca {
+    margin-bottom:
+      1px;
+  }
+
+
+  .titulo h2 {
+    font-size:
+      25px;
+  }
+
+
+  .titulo p {
+    line-height:
+      1.45;
+  }
+
+
+  .vazio {
+    padding:
+      30px 20px;
+  }
+
+}

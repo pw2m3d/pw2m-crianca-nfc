@@ -5,7 +5,7 @@ import br.com.pw2m.nfc.service.PublicChildService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/public/children")
+@RequestMapping("/api/public")
 public class PublicChildController {
 
     private final PublicChildService children;
@@ -14,14 +14,21 @@ public class PublicChildController {
         this.children = children;
     }
 
-    @GetMapping("/{publicToken}")
+    @GetMapping("/devices/{deviceToken}")
+    public ChildDtos.PublicChildResponse getByDeviceToken(
+            @PathVariable String deviceToken
+    ) {
+        return children.getByDeviceToken(deviceToken);
+    }
+
+    @GetMapping("/children/{publicToken}")
     public ChildDtos.PublicChildResponse get(
             @PathVariable String publicToken
     ) {
         return children.get(publicToken);
     }
 
-    @GetMapping("/{publicToken}/device/{deviceToken}")
+    @GetMapping("/children/{publicToken}/device/{deviceToken}")
     public ChildDtos.PublicChildResponse getByDevice(
             @PathVariable String publicToken,
             @PathVariable String deviceToken

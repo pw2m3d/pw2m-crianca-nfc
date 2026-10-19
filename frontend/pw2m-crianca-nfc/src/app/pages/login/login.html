@@ -1,0 +1,89 @@
+<div class="pagina">
+
+    <div class="card">
+
+        <div class="logo-sistema">
+            <img
+                    src="/img/logo-sistema-nfc.png"
+                    alt="PW2M Sistema de Localização NFC">
+        </div>
+
+        <h1>
+            Entrar
+        </h1>
+
+        <p class="subtitulo">
+            Acesse sua conta para administrar
+            as fichas NFC.
+        </p>
+
+        @if (erro) {
+
+        <div class="mensagem erro">
+
+            {{ erro }}
+
+        </div>
+
+        }
+
+        <form
+            [formGroup]="formulario"
+            (ngSubmit)="entrar()">
+
+            <div class="campo">
+
+                <label>
+                    E-mail
+                </label>
+
+                <input
+                    type="email"
+                    formControlName="email"
+                    placeholder="seu@email.com">
+
+            </div>
+
+            <div class="campo">
+
+                <label>
+                    Senha
+                </label>
+
+                <input
+                    type="password"
+                    formControlName="senha">
+
+            </div>
+
+            <button
+                type="submit"
+                [disabled]="carregando">
+
+                @if (carregando) {
+
+                Entrando...
+
+                } @else {
+
+                Entrar
+
+                }
+
+            </button>
+
+        </form>
+
+        <div class="login">
+
+            Não possui cadastro?
+
+            <a routerLink="/cadastro">
+                Criar conta
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,148 @@
+.pagina {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(135deg,
+            #f7f8fc,
+            #edf1f7);
+
+    padding: 20px;
+}
+
+.card {
+    width: 100%;
+    max-width: 440px;
+
+    background: white;
+
+    padding: 38px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.08);
+}
+
+.logo-sistema {
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 24px;
+}
+
+.logo-sistema img {
+  width: 100%;
+  height: 100%;
+
+  justify-content: center;
+  align-items: center;
+
+  display: block;
+
+  object-fit: contain;
+}
+
+h1 {
+    margin: 0 0 8px;
+}
+
+.subtitulo {
+    color: #71717a;
+
+    margin-bottom: 28px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+
+    margin-bottom: 18px;
+}
+
+label {
+    font-weight: 600;
+}
+
+input {
+    padding: 13px 14px;
+
+    border:
+        1px solid #d4d4d8;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+input:focus {
+    border-color: #d62d35;
+}
+
+button {
+    width: 100%;
+
+    padding: 14px;
+
+    background: #d62d35;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: 0.6;
+}
+
+.login {
+    text-align: center;
+
+    margin-top: 24px;
+
+    color: #71717a;
+}
+
+.login a {
+    color: #d62d35;
+
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.mensagem {
+    padding: 12px;
+
+    border-radius: 8px;
+
+    margin-bottom: 20px;
+}
+
+.erro {
+    background: #fff1f2;
+    color: #991b1b;
+}
+
+.sucesso {
+    background: #ecfdf5;
+    color: #166534;
+}
