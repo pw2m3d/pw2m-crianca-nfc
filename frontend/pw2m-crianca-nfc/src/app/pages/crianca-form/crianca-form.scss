@@ -1,0 +1,207 @@
+.pagina {
+  min-height: 100vh;
+  background: #f5f7fb;
+  padding: 40px 20px;
+}
+
+.container {
+  width: min(1000px, 100%);
+  margin: auto;
+}
+
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+h1 {
+  margin: 0;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+section {
+  background: white;
+  padding: 25px;
+  margin-bottom: 20px;
+  border-radius: 16px;
+
+  box-shadow:
+    0 8px 25px
+    rgba(0, 0, 0, .05);
+}
+
+.grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 20px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.campo-grande {
+  grid-column: span 2;
+}
+
+label {
+  font-weight: 600;
+}
+
+input,
+select,
+textarea {
+  padding: 12px;
+
+  border:
+    1px solid #d4d4d8;
+
+  border-radius: 8px;
+
+  font: inherit;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.check {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.aviso {
+  color: #71717a;
+  font-size: 14px;
+}
+
+.erro {
+  background: #fff1f2;
+  color: #991b1b;
+
+  padding: 14px;
+
+  border-radius: 10px;
+
+  margin-bottom: 20px;
+}
+
+.acoes {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+}
+
+button {
+  background: #d62d35;
+  color: white;
+
+  border: 0;
+  border-radius: 9px;
+
+  padding: 13px 22px;
+
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.cancelar,
+.voltar {
+  text-decoration: none;
+  color: #52525b;
+}
+
+.topo-identidade {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+}
+
+.logo-sistema {
+  width: 64px;
+  height: 64px;
+
+  flex: 0 0 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-sistema img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+.marca-sistema {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #d62d35;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.topo-identidade h1 {
+  margin: 0;
+}
+
+.topo-identidade p {
+  margin: 5px 0 0;
+
+  color: #71717a;
+}
+
+@media (max-width: 700px) {
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .campo-grande {
+    grid-column: span 1;
+  }
+
+  .topo {
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+ .topo-identidade {
+    align-items: flex-start;
+  }
+
+  .logo-sistema {
+    width: 54px;
+    height: 54px;
+
+    flex-basis: 54px;
+  }
+}

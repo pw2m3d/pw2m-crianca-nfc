@@ -1,0 +1,889 @@
+<div class="pagina-nfc">
+
+    <!-- =========================================
+         CABEÇALHO
+         ========================================= -->
+
+    <header class="cabecalho">
+
+        <div class="header-brand">
+
+            <div class="logo-box">
+
+                <img
+                        src="/img/logo-sistema-nfc.png"
+                        alt="PW2M Sistema de Localização NFC"
+                        class="header-logo">
+
+            </div>
+
+
+            <div class="header-textos">
+
+                <span class="header-marca">
+                    PW2M
+                </span>
+
+                <h1>
+                    Dispositivos NFC
+                </h1>
+
+                @if (crianca()) {
+
+                <p>
+                    Gerencie os dispositivos NFC de
+                    <strong>
+                        {{ crianca()!.fullName }}
+                    </strong>
+                </p>
+
+                }
+
+            </div>
+
+        </div>
+
+
+        <a
+                routerLink="/dashboard"
+                class="voltar-dashboard">
+
+            <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+
+                <path d="M19 12H5"></path>
+                <path d="M12 19l-7-7 7-7"></path>
+
+            </svg>
+
+            <span>
+                Voltar ao painel
+            </span>
+
+        </a>
+
+    </header>
+
+
+    <main>
+
+        <!-- =====================================
+             ERRO
+             ===================================== -->
+
+        @if (erro()) {
+
+        <div class="erro">
+
+            <svg
+                    width="19"
+                    height="19"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true">
+
+                <circle
+                        cx="12"
+                        cy="12"
+                        r="10">
+                </circle>
+
+                <path d="M12 8v4"></path>
+                <path d="M12 16h.01"></path>
+
+            </svg>
+
+            <span>
+                    {{ erro() }}
+                </span>
+
+        </div>
+
+        }
+
+
+        <!-- =====================================
+             CARREGANDO
+             ===================================== -->
+
+        @if (carregando()) {
+
+        <div class="carregando">
+
+            <div class="spinner"></div>
+
+            <span>
+                    Carregando dispositivos NFC...
+                </span>
+
+        </div>
+
+        } @else {
+
+
+        <!-- =================================
+             EXPLICAÇÃO
+             ================================= -->
+
+        <section class="intro">
+
+            <div class="intro-icone">
+
+                <svg
+                        width="26"
+                        height="26"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                    <path
+                            d="M5.5 7.5a9 9 0 0 1 13 0">
+                    </path>
+
+                    <path
+                            d="M8.5 10.5a5 5 0 0 1 7 0">
+                    </path>
+
+                    <path
+                            d="M11 13a1.5 1.5 0 0 1 2 0">
+                    </path>
+
+                    <circle
+                            cx="12"
+                            cy="17"
+                            r="1">
+                    </circle>
+
+                </svg>
+
+            </div>
+
+
+            <div>
+
+                <h2>
+                    NFCs da criança
+                </h2>
+
+                <p>
+                    Vincule um chaveiro já ativado (código + PIN)
+                    a esta pessoa. A URL gravada na tag usa o código
+                    do dispositivo.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             CADASTRAR NOVO NFC
+             ================================= -->
+
+        <section class="novo-dispositivo">
+
+            <div class="secao-cabecalho">
+
+                <div>
+
+                        <span class="secao-label">
+                            VÍNCULO
+                        </span>
+
+                    <h2>
+                        Vincular chaveiro ativado
+                    </h2>
+
+                    <p>
+                        Ative o produto em Meus chaveiros e depois
+                        escolha-o aqui.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form
+                    [formGroup]="formulario"
+                    (ngSubmit)="adicionar()">
+
+                <div class="form-grid">
+
+
+                    <!-- NOME -->
+
+                    <div class="campo">
+
+                        <label for="deviceId">
+                            Chaveiro disponível
+                        </label>
+
+                        <select
+                                id="deviceId"
+                                formControlName="deviceId">
+
+                            <option value="">
+                                Selecione
+                            </option>
+
+                            @for (item of disponiveis(); track item.id) {
+                            <option [value]="item.id">
+                                {{ item.deviceName }} — {{ item.deviceCode }}
+                            </option>
+                            }
+
+                        </select>
+
+                        <small>
+                            @if (disponiveis().length === 0) {
+                            Nenhum chaveiro CLAIMED. Ative um PIN em Meus chaveiros.
+                            }
+                        </small>
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label for="deviceName">
+                            Identificação do dispositivo
+                        </label>
+
+                        <input
+                                id="deviceName"
+                                type="text"
+                                formControlName="deviceName"
+                                placeholder="Ex.: Mochila da escola">
+
+                        <small>
+                            Use um nome que facilite identificar
+                            fisicamente a tag.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-acoes">
+
+                    <button
+                            type="submit"
+                            class="adicionar"
+                            [disabled]="salvando()">
+
+                        @if (salvando()) {
+
+                        <div class="spinner pequeno"></div>
+
+                        <span>
+                                    Vinculando...
+                                </span>
+
+                        } @else {
+
+                        <svg
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                aria-hidden="true">
+
+                            <path d="M12 5v14"></path>
+                            <path d="M5 12h14"></path>
+
+                        </svg>
+
+                        <span>
+                                    Vincular NFC
+                                </span>
+
+                        }
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- =================================
+             LISTAGEM DOS NFCs
+             ================================= -->
+
+        <section class="dispositivos">
+
+            <div class="secao-cabecalho">
+
+                <div>
+
+                        <span class="secao-label">
+                            DISPOSITIVOS CADASTRADOS
+                        </span>
+
+                    <h2>
+                        NFCs ativos e cadastrados
+                    </h2>
+
+                </div>
+
+
+                <div class="contador">
+
+                    {{ dispositivos().length }}
+
+                    @if (dispositivos().length === 1) {
+                    dispositivo
+                    } @else {
+                    dispositivos
+                    }
+
+                </div>
+
+            </div>
+
+
+            @if (dispositivos().length === 0) {
+
+            <div class="vazio">
+
+                <div class="vazio-icone">
+
+                    <svg
+                            width="28"
+                            height="28"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            aria-hidden="true">
+
+                        <path
+                                d="M5.5 7.5a9 9 0 0 1 13 0">
+                        </path>
+
+                        <path
+                                d="M8.5 10.5a5 5 0 0 1 7 0">
+                        </path>
+
+                        <circle
+                                cx="12"
+                                cy="17"
+                                r="1">
+                        </circle>
+
+                    </svg>
+
+                </div>
+
+                <h3>
+                    Nenhum NFC cadastrado
+                </h3>
+
+                <p>
+                    Utilize o formulário acima para cadastrar
+                    a primeira tag NFC desta criança.
+                </p>
+
+            </div>
+
+            } @else {
+
+            <div class="tabela-wrapper">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+                        <th>Dispositivo</th>
+                        <th>Categoria</th>
+                        <th>Status</th>
+                        <th>Token NFC</th>
+                        <th>Link para gravar</th>
+                        <th class="coluna-acoes">
+                            Ações
+                        </th>
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    @for (
+                    dispositivo of dispositivos();
+                    track dispositivo.id
+                    ) {
+
+                    <tr>
+
+
+                        <!-- DISPOSITIVO -->
+
+                        <td>
+
+                            <div class="device-info">
+
+                                <div
+                                        class="device-icon"
+                                        [class.inativo]="
+                                                        !dispositivo.active
+                                                    ">
+
+                                    @switch (
+                                    dispositivo.category
+                                    ) {
+
+                                    @case ('MOCHILA') {
+
+                                    <svg
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true">
+
+                                        <path
+                                                d="M6 8V6a6 6 0 0 1 12 0v2">
+                                        </path>
+
+                                        <rect
+                                                x="4"
+                                                y="8"
+                                                width="16"
+                                                height="13"
+                                                rx="3">
+                                        </rect>
+
+                                        <path
+                                                d="M8 13h8">
+                                        </path>
+
+                                    </svg>
+
+                                    }
+
+
+                                    @case ('PULSEIRA') {
+
+                                    <svg
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true">
+
+                                        <rect
+                                                x="7"
+                                                y="7"
+                                                width="10"
+                                                height="10"
+                                                rx="3">
+                                        </rect>
+
+                                        <path d="M9 7V2"></path>
+                                        <path d="M15 7V2"></path>
+
+                                        <path d="M9 22v-5"></path>
+                                        <path d="M15 22v-5"></path>
+
+                                    </svg>
+
+                                    }
+
+
+                                    @case ('CHAVEIRO') {
+
+                                    <svg
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true">
+
+                                        <circle
+                                                cx="8"
+                                                cy="8"
+                                                r="5">
+                                        </circle>
+
+                                        <path
+                                                d="M11.5 11.5 21 21">
+                                        </path>
+
+                                        <path d="m17 17 2-2"></path>
+
+                                    </svg>
+
+                                    }
+
+
+                                    @case ('CARTAO') {
+
+                                    <svg
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true">
+
+                                        <rect
+                                                x="2"
+                                                y="5"
+                                                width="20"
+                                                height="14"
+                                                rx="2">
+                                        </rect>
+
+                                        <path d="M2 10h20"></path>
+
+                                    </svg>
+
+                                    }
+
+
+                                    @case ('ETIQUETA') {
+
+                                    <svg
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true">
+
+                                        <path
+                                                d="M20 12 12 20 4 12V4h8Z">
+                                        </path>
+
+                                        <circle
+                                                cx="9"
+                                                cy="9"
+                                                r="1">
+                                        </circle>
+
+                                    </svg>
+
+                                    }
+
+
+                                    @default {
+
+                                    <svg
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true">
+
+                                        <path
+                                                d="M5.5 7.5a9 9 0 0 1 13 0">
+                                        </path>
+
+                                        <path
+                                                d="M8.5 10.5a5 5 0 0 1 7 0">
+                                        </path>
+
+                                        <circle
+                                                cx="12"
+                                                cy="17"
+                                                r="1">
+                                        </circle>
+
+                                    </svg>
+
+                                    }
+
+                                    }
+
+                                </div>
+
+
+                                <div>
+
+                                    <strong>
+                                        {{
+                                        dispositivo.deviceName
+                                        }}
+                                    </strong>
+
+                                    <small>
+                                        NFC #{{
+                                        dispositivo.id
+                                        }}
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- CATEGORIA -->
+
+                        <td>
+
+                                            <span class="categoria">
+
+                                                {{
+                                                    categoriaLabel(
+                                                        dispositivo.category
+                                                    )
+                                                }}
+
+                                            </span>
+
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            @if (dispositivo.active) {
+
+                            <span class="status ativo">
+
+                                                    <span
+                                                            class="status-dot">
+                                                    </span>
+
+                                                    Ativo
+
+                                                </span>
+
+                            } @else {
+
+                            <span class="status inativo">
+
+                                                    <span
+                                                            class="status-dot">
+                                                    </span>
+
+                                                    Inativo
+
+                                                </span>
+
+                            }
+
+                        </td>
+
+
+                        <!-- TOKEN -->
+
+                        <td>
+
+                            <code
+                                    class="token"
+                                    [title]="
+                                                    dispositivo.deviceToken
+                                                ">
+
+                                {{
+                                dispositivo.deviceToken
+                                }}
+
+                            </code>
+
+                        </td>
+
+
+                        <!-- LINK NFC -->
+
+                        <td>
+
+                            <div class="link-nfc">
+
+                                <code
+                                        [title]="
+                                                        linkNfc(
+                                                            dispositivo
+                                                        )
+                                                    ">
+
+                                    {{
+                                    linkNfc(
+                                    dispositivo
+                                    )
+                                    }}
+
+                                </code>
+
+
+                                <button
+                                        type="button"
+                                        class="copiar"
+                                        title="Copiar link"
+                                        aria-label="Copiar link NFC"
+                                        (click)="
+                                                        copiar(
+                                                            dispositivo
+                                                        )
+                                                    ">
+
+                                    <svg
+                                            width="17"
+                                            height="17"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round">
+
+                                        <rect
+                                                x="9"
+                                                y="9"
+                                                width="13"
+                                                height="13"
+                                                rx="2">
+                                        </rect>
+
+                                        <path
+                                                d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1">
+                                        </path>
+
+                                    </svg>
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- AÇÕES -->
+
+                        <td class="acoes">
+
+                            <button
+                                    type="button"
+                                    class="botao-status"
+                                    [class.desativar]="
+                                                    dispositivo.active
+                                                "
+                                    [class.ativar]="
+                                                    !dispositivo.active
+                                                "
+                                    [title]="
+                                                    dispositivo.active
+                                                        ? 'Desativar NFC'
+                                                        : 'Ativar NFC'
+                                                "
+                                    (click)="
+                                                    alternar(
+                                                        dispositivo
+                                                    )
+                                                ">
+
+                                @if (
+                                dispositivo.active
+                                ) {
+
+                                <svg
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round">
+
+                                    <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="10">
+                                    </circle>
+
+                                    <path
+                                            d="M15 9l-6 6">
+                                    </path>
+
+                                    <path
+                                            d="M9 9l6 6">
+                                    </path>
+
+                                </svg>
+
+                                } @else {
+
+                                <svg
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round">
+
+                                    <path
+                                            d="m5 12 4 4L19 6">
+                                    </path>
+
+                                </svg>
+
+                                }
+
+                            </button>
+
+                            <button
+                                    type="button"
+                                    class="botao-status desativar"
+                                    title="Desvincular desta pessoa"
+                                    (click)="desvincular(dispositivo)">
+                                Soltar
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            }
+
+        </section>
+
+        }
+
+    </main>
+
+
+    <!-- =========================================
+         RODAPÉ
+         ========================================= -->
+
+    <footer>
+
+        <img
+                src="/img/logo-sistema-nfc.png"
+                alt="PW2M"
+                width="34"
+                height="34">
+
+        <div>
+
+            <strong>
+                PW2M
+            </strong>
+
+            <span>
+                Sistema de Localização NFC para Crianças
+            </span>
+
+        </div>
+
+    </footer>
+
+</div>

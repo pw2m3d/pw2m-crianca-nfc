@@ -1,0 +1,362 @@
+<div class="pagina">
+
+    <div class="container">
+
+        <div class="topo">
+
+            <div class="topo-identidade">
+
+                <div class="logo-sistema">
+                    <img
+                            src="/img/logo-sistema-nfc.png"
+                            alt="PW2M Sistema de Localização NFC">
+                </div>
+
+                <div>
+
+                    <h1>
+                        @if (editando) {
+                        Editar criança
+                        } @else {
+                        Cadastrar criança
+                        }
+                    </h1>
+
+                    <p>
+                        Informações da ficha de identificação e emergência.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                    routerLink="/dashboard"
+                    class="voltar">
+
+                Voltar
+
+            </a>
+
+        </div>
+
+        @if (erro) {
+        <div class="erro">
+            {{ erro }}
+        </div>
+        }
+
+        <form
+                [formGroup]="formulario"
+                (ngSubmit)="salvar()">
+
+            <section>
+
+                <h2>Dados da criança</h2>
+
+                <div class="grid">
+
+                    <div class="campo campo-grande">
+                        <label>Nome completo *</label>
+
+                        <input
+                                type="text"
+                                formControlName="fullName">
+                    </div>
+
+                    <div class="campo">
+                        <label>Tipo de pessoa</label>
+                        <select formControlName="personType">
+                            <option value="CHILD">Criança</option>
+                            <option value="ELDERLY">Idoso</option>
+                            <option value="ADULT">Adulto</option>
+                            <option value="OTHER">Outro</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label>Data de nascimento</label>
+
+                        <input
+                                type="date"
+                                formControlName="birthDate">
+                    </div>
+
+                    <div class="campo">
+                        <label>Tipo sanguíneo</label>
+
+                        <select formControlName="bloodType">
+
+                            <option value="">
+                                Não informado
+                            </option>
+
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section>
+
+                <h2>Endereço</h2>
+
+                <p class="aviso">
+                    O endereço é privado e não será mostrado
+                    na ficha pública NFC.
+                </p>
+
+                <div class="grid">
+
+                    <div class="campo campo-grande">
+
+                        <label>Endereço</label>
+
+                        <input
+                                type="text"
+                                formControlName="addressLine">
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>Cidade</label>
+
+                        <input
+                                type="text"
+                                formControlName="city">
+
+                    </div>
+
+                    <div class="campo pequeno">
+
+                        <label>UF</label>
+
+                        <input
+                                type="text"
+                                maxlength="2"
+                                formControlName="state">
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section>
+
+                <h2>Informações médicas</h2>
+
+                <div class="grid">
+
+                    <div class="campo">
+
+                        <label>Alergias</label>
+
+                        <textarea
+                                formControlName="allergies">
+            </textarea>
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>Condições médicas</label>
+
+                        <textarea
+                                formControlName="conditions">
+            </textarea>
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>Medicamentos</label>
+
+                        <textarea
+                                formControlName="medications">
+            </textarea>
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>Observações de emergência</label>
+
+                        <textarea
+                                formControlName="emergencyNotes">
+            </textarea>
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>Plano de saúde</label>
+
+                        <input
+                                type="text"
+                                formControlName="healthPlan">
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>Número do plano</label>
+
+                        <input
+                                type="text"
+                                formControlName="healthPlanNumber">
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section>
+
+                <h2>Contato de emergência</h2>
+
+                <div class="grid">
+
+                    <div class="campo">
+
+                        <label>Nome *</label>
+
+                        <input
+                                type="text"
+                                formControlName="contactName">
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>Parentesco *</label>
+
+                        <select
+                                formControlName="contactRelation">
+
+                            <option value="">
+                                Selecione
+                            </option>
+
+                            <option value="Mãe">
+                                Mãe
+                            </option>
+
+                            <option value="Pai">
+                                Pai
+                            </option>
+
+                            <option value="Avó">
+                                Avó
+                            </option>
+
+                            <option value="Avô">
+                                Avô
+                            </option>
+
+                            <option value="Responsável">
+                                Responsável
+                            </option>
+
+                            <option value="Outro">
+                                Outro
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>Telefone *</label>
+
+                        <input
+                                type="tel"
+                                formControlName="contactPhone">
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label>WhatsApp</label>
+
+                        <input
+                                type="tel"
+                                formControlName="contactWhatsapp">
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section>
+
+                <label class="check">
+
+                    <input
+                            type="checkbox"
+                            formControlName="publicEnabled">
+
+                    <span>
+            Permitir acesso à ficha pública pelo NFC
+          </span>
+
+                </label>
+
+            </section>
+
+
+            <div class="acoes">
+
+                <a
+                        routerLink="/dashboard"
+                        class="cancelar">
+                    Cancelar
+                </a>
+
+                <button
+                        type="submit"
+                        [disabled]="carregando">
+
+                    @if (carregando) {
+
+                    Salvando...
+
+                    } @else {
+
+                    @if (editando) {
+                    Salvar alterações
+                    } @else {
+                    Salvar criança
+                    }
+
+                    }
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

@@ -1,0 +1,444 @@
+<div class="pagina-publica">
+
+    <!-- =========================================
+         BARRA ADMINISTRATIVA
+         Só aparece quando o responsável está logado
+         ========================================= -->
+
+    @if (responsavelLogado) {
+
+    <div class="barra-administrativa">
+
+        <a
+                routerLink="/dashboard"
+                class="voltar-dashboard">
+
+            <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+
+                <path d="M19 12H5"></path>
+                <path d="M12 19l-7-7 7-7"></path>
+
+            </svg>
+
+            <span>
+                    Voltar ao painel
+                </span>
+
+        </a>
+
+    </div>
+
+    }
+
+
+    <!-- =========================================
+         CARREGANDO
+         ========================================= -->
+
+    @if (carregando()) {
+
+    <div class="mensagem">
+        Carregando ficha...
+    </div>
+
+    } @else {
+
+
+    <!-- =====================================
+         ERRO
+         ===================================== -->
+
+    @if (erro()) {
+
+    <div class="mensagem erro">
+        {{ erro() }}
+    </div>
+
+    } @else {
+
+
+    <!-- =================================
+         FICHA
+         ================================= -->
+
+    @if (crianca(); as pessoa) {
+
+    <main class="ficha">
+
+
+        <!-- =========================
+             CABEÇALHO
+             ========================= -->
+
+        <div class="cabecalho">
+
+            <div class="marca-logo">
+
+                <img
+                        src="/img/logo-sistema-nfc.png"
+                        alt="PW2M Sistema de Localização NFC"
+                        width="72"
+                        height="72">
+
+            </div>
+
+
+            <div class="cabecalho-texto">
+
+                <small>
+                    FICHA DE EMERGÊNCIA
+                </small>
+
+                <h1>
+                    {{ pessoa.name }}
+                </h1>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             DADOS PRINCIPAIS
+             ========================= -->
+
+        <div class="dados-principais">
+
+            <div class="dado">
+
+                            <span>
+                                Idade
+                            </span>
+
+                <strong>
+                    {{
+                    pessoa.ageYears
+                    ?? 'Não informada'
+                    }}
+                </strong>
+
+            </div>
+
+
+            <div class="dado">
+
+                            <span>
+                                Tipo sanguíneo
+                            </span>
+
+                <strong class="sangue">
+                    {{
+                    pessoa.bloodType
+                    ?? 'Não informado'
+                    }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             INFORMAÇÕES MÉDICAS
+             ========================= -->
+
+        @if (pessoa.medical) {
+
+        <section>
+
+            <h2>
+                Informações médicas
+            </h2>
+
+
+            @if (pessoa.medical.allergies) {
+
+            <div class="alerta">
+
+                <strong>
+                    Alergias
+                </strong>
+
+                <p>
+                    {{ pessoa.medical.allergies }}
+                </p>
+
+            </div>
+
+            }
+
+
+            @if (pessoa.medical.conditions) {
+
+            <div class="informacao">
+
+                <strong>
+                    Condições médicas
+                </strong>
+
+                <p>
+                    {{ pessoa.medical.conditions }}
+                </p>
+
+            </div>
+
+            }
+
+
+            @if (pessoa.medical.medications) {
+
+            <div class="informacao">
+
+                <strong>
+                    Medicamentos
+                </strong>
+
+                <p>
+                    {{ pessoa.medical.medications }}
+                </p>
+
+            </div>
+
+            }
+
+
+            @if (pessoa.medical.emergencyNotes) {
+
+            <div class="informacao">
+
+                <strong>
+                    Observações importantes
+                </strong>
+
+                <p>
+                    {{ pessoa.medical.emergencyNotes }}
+                </p>
+
+            </div>
+
+            }
+
+        </section>
+
+        }
+
+
+        <!-- =========================
+             CONTATOS DE EMERGÊNCIA
+             ========================= -->
+
+        <section>
+
+            <h2>
+                Contatos de emergência
+            </h2>
+
+
+            @if (
+            pessoa.contacts &&
+            pessoa.contacts.length > 0
+            ) {
+
+            @for (
+            contato of pessoa.contacts;
+            track contato.id
+            ) {
+
+            <div class="contato">
+
+                <div class="contato-info">
+
+                    <strong>
+                        {{ contato.name }}
+                    </strong>
+
+                    <span>
+                                            {{ contato.relation }}
+                                        </span>
+
+                </div>
+
+
+                <div class="botoes">
+
+
+                    <!-- LIGAR -->
+
+                    <a
+                            class="ligar"
+                            [href]="
+                                                'tel:' +
+                                                telefoneLink(
+                                                    contato.phone
+                                                )
+                                            ">
+
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true">
+
+                            <path
+                                    d="
+                                                        M22 16.92v3
+                                                        a2 2 0 0 1-2.18 2
+                                                        19.79 19.79 0 0 1-8.63-3.07
+                                                        19.5 19.5 0 0 1-6-6
+                                                        19.79 19.79 0 0 1-3.07-8.67
+                                                        A2 2 0 0 1 3.9 2h3
+                                                        a2 2 0 0 1 2 1.72
+                                                        c.12.9.33 1.78.62 2.63
+                                                        a2 2 0 0 1-.45 2.11
+                                                        L7.8 9.73
+                                                        a16 16 0 0 0 6 6
+                                                        l1.27-1.27
+                                                        a2 2 0 0 1 2.11-.45
+                                                        c.85.29 1.73.5 2.63.62
+                                                        A2 2 0 0 1 22 16.92z
+                                                    ">
+                            </path>
+
+                        </svg>
+
+                        <span>
+                                                Ligar
+                                            </span>
+
+                    </a>
+
+
+                    <!-- WHATSAPP -->
+
+                    @if (contato.whatsapp) {
+
+                    <a
+                            class="whatsapp"
+                            [href]="
+                                                    whatsappLink(
+                                                        contato.whatsapp
+                                                    )
+                                                "
+                            target="_blank"
+                            rel="noopener noreferrer">
+
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true">
+
+                            <path
+                                    d="
+                                                            M21 11.5
+                                                            a8.38 8.38 0 0 1-.9 3.8
+                                                            8.5 8.5 0 0 1-7.6 4.7
+                                                            8.38 8.38 0 0 1-3.8-.9
+                                                            L3 21
+                                                            l1.9-5.7
+                                                            a8.38 8.38 0 0 1-.9-3.8
+                                                            8.5 8.5 0 0 1 4.7-7.6
+                                                            8.38 8.38 0 0 1 3.8-.9
+                                                            h.5
+                                                            a8.48 8.48 0 0 1 8 8
+                                                            z
+                                                        ">
+                            </path>
+
+                        </svg>
+
+                        <span>
+                                                    WhatsApp
+                                                </span>
+
+                    </a>
+
+                    }
+
+                </div>
+
+            </div>
+
+            }
+
+            } @else {
+
+            <div class="sem-contato">
+
+                Nenhum contato de emergência
+                foi informado.
+
+            </div>
+
+            }
+
+        </section>
+
+
+        <!-- =========================
+             RODAPÉ
+             ========================= -->
+
+        <footer>
+
+            <div class="footer-brand">
+
+                <img
+                        src="/img/logo-sistema-nfc.png"
+                        alt="PW2M"
+                        class="footer-logo"
+                        width="42"
+                        height="42">
+
+                <div>
+
+                    <strong>
+                        PW2M
+                    </strong>
+
+                    <p>
+                        Sistema de Localização NFC
+                        para Crianças
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <small>
+                Ficha de identificação e emergência.
+            </small>
+
+        </footer>
+
+    </main>
+
+    }
+
+    }
+
+    }
+
+</div>

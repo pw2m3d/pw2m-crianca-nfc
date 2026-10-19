@@ -1,0 +1,628 @@
+<div class="dashboard">
+
+    <!-- ========================================
+         CABEÇALHO PRINCIPAL
+         ======================================== -->
+
+    <header class="cabecalho">
+
+        <div class="header-brand">
+
+            <div class="logo-box">
+
+                <img
+                        src="/img/logo-sistema-nfc.png"
+                        alt="PW2M Sistema de Localização NFC"
+                        class="header-logo">
+
+            </div>
+
+
+            <div class="header-textos">
+
+                <h1 class="header-titulo">
+                    Sistema de Localização NFC para Crianças
+                </h1>
+
+            </div>
+
+        </div>
+
+
+        <button
+                type="button"
+                class="sair"
+                (click)="sair()"
+                title="Sair do sistema"
+                aria-label="Sair do sistema">
+
+            <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                <path
+                        d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4">
+                </path>
+
+                <polyline
+                        points="16 17 21 12 16 7">
+                </polyline>
+
+                <line
+                        x1="21"
+                        y1="12"
+                        x2="9"
+                        y2="12">
+                </line>
+
+            </svg>
+
+            <span>
+        Sair
+      </span>
+
+        </button>
+
+    </header>
+
+
+    <!-- ========================================
+         CONTEÚDO PRINCIPAL
+         ======================================== -->
+
+    <main>
+
+        <!-- ======================================
+             TÍTULO
+             ====================================== -->
+
+        <div class="titulo">
+
+            <div>
+
+        <span class="secao-label">
+          PAINEL DO RESPONSÁVEL
+        </span>
+
+                <h2>
+                    Minhas crianças
+                </h2>
+
+                <p>
+                    Gerencie as fichas de identificação e os acessos NFC cadastrados.
+                </p>
+
+            </div>
+
+
+            <a
+                    class="novo"
+                    routerLink="/dispositivos">
+                <span>Meus chaveiros</span>
+            </a>
+
+            @if (admin) {
+            <a class="novo" routerLink="/admin/estoque">
+                <span>Estoque NFC</span>
+            </a>
+            }
+
+            <!-- CADASTRAR CRIANÇA -->
+
+            <a
+                    class="novo"
+                    routerLink="/criancas/nova">
+
+                <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true">
+
+                    <path d="M12 5v14"></path>
+                    <path d="M5 12h14"></path>
+
+                </svg>
+
+                <span>
+          Cadastrar criança
+        </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- ======================================
+             ERRO
+             ====================================== -->
+
+        @if (erro()) {
+
+        <div class="erro">
+
+            <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                <circle
+                        cx="12"
+                        cy="12"
+                        r="10">
+                </circle>
+
+                <line
+                        x1="12"
+                        y1="8"
+                        x2="12"
+                        y2="12">
+                </line>
+
+                <line
+                        x1="12"
+                        y1="16"
+                        x2="12.01"
+                        y2="16">
+                </line>
+
+            </svg>
+
+            <span>
+          {{ erro() }}
+        </span>
+
+        </div>
+
+        }
+
+
+        <!-- ======================================
+             CARREGANDO
+             ====================================== -->
+
+        @if (carregando()) {
+
+        <div class="card carregando-card">
+
+            <div class="spinner"></div>
+
+            <span>
+          Carregando fichas...
+        </span>
+
+        </div>
+
+        } @else {
+
+
+        <!-- ====================================
+             NENHUMA CRIANÇA
+             ==================================== -->
+
+        @if (criancas().length === 0) {
+
+        <div class="card vazio">
+
+            <div class="vazio-icone">
+
+                <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true">
+
+                    <path
+                            d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2">
+                    </path>
+
+                    <circle
+                            cx="9"
+                            cy="7"
+                            r="4">
+                    </circle>
+
+                    <line
+                            x1="19"
+                            y1="8"
+                            x2="19"
+                            y2="14">
+                    </line>
+
+                    <line
+                            x1="22"
+                            y1="11"
+                            x2="16"
+                            y2="11">
+                    </line>
+
+                </svg>
+
+            </div>
+
+
+            <h3>
+                Nenhuma criança cadastrada
+            </h3>
+
+            <p>
+                Cadastre a primeira ficha para gerar
+                o identificador de acesso NFC.
+            </p>
+
+
+            <a
+                    class="novo"
+                    routerLink="/criancas/nova">
+
+                <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true">
+
+                    <path d="M12 5v14"></path>
+                    <path d="M5 12h14"></path>
+
+                </svg>
+
+                <span>
+              Cadastrar primeira criança
+            </span>
+
+            </a>
+
+        </div>
+
+        } @else {
+
+
+        <!-- ==================================
+             TABELA
+             ================================== -->
+
+        <div class="tabela-wrapper">
+
+            <table class="tabela-criancas">
+
+                <thead>
+
+                <tr>
+
+                    <th>
+                        Criança
+                    </th>
+
+                    <th>
+                        Idade
+                    </th>
+
+                    <th>
+                        Tipo sanguíneo
+                    </th>
+
+                    <th>
+                        Status NFC
+                    </th>
+
+                    <th>
+                        Token público
+                    </th>
+
+                    <th class="acoes-coluna">
+                        Ações
+                    </th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                @for (
+                crianca of criancas();
+                track crianca.id
+                ) {
+
+                <tr>
+
+
+                    <!-- ========================
+                         CRIANÇA
+                         ======================== -->
+
+                    <td>
+
+                        <div class="crianca-info">
+
+                            <div class="avatar">
+
+                                {{
+                                crianca.fullName
+                                .charAt(0)
+                                .toUpperCase()
+                                }}
+
+                            </div>
+
+
+                            <div>
+
+                                <strong class="nome">
+                                    {{ crianca.fullName }}
+                                </strong>
+
+                                <small>
+                                    Ficha #{{ crianca.id }}
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+
+                    <!-- ========================
+                         IDADE
+                         ======================== -->
+
+                    <td>
+
+                        @if (
+                        crianca.ageYears !== null &&
+                        crianca.ageYears !== undefined
+                        ) {
+
+                        <span class="idade">
+                        {{ crianca.ageYears }} anos
+                      </span>
+
+                        } @else {
+
+                        <span class="muted">
+                        Não informada
+                      </span>
+
+                        }
+
+                    </td>
+
+
+                    <!-- ========================
+                         TIPO SANGUÍNEO
+                         ======================== -->
+
+                    <td>
+
+                        @if (crianca.bloodType) {
+
+                        <span class="tipo-sanguineo">
+                        {{ crianca.bloodType }}
+                      </span>
+
+                        } @else {
+
+                        <span class="muted">
+                        Não informado
+                      </span>
+
+                        }
+
+                    </td>
+
+
+                    <!-- ========================
+                         STATUS NFC
+                         ======================== -->
+
+                    <td>
+
+                        @if (crianca.publicEnabled) {
+
+                        <span class="status ativo">
+
+                        <span class="status-dot"></span>
+
+                        Ativo
+
+                      </span>
+
+                        } @else {
+
+                        <span class="status inativo">
+
+                        <span class="status-dot"></span>
+
+                        Inativo
+
+                      </span>
+
+                        }
+
+                    </td>
+
+
+                    <!-- ========================
+                         TOKEN PÚBLICO
+                         ======================== -->
+
+                    <td class="token">
+
+                        <code
+                                [title]="crianca.publicToken">
+
+                            {{ crianca.publicToken }}
+
+                        </code>
+
+                    </td>
+
+
+                    <!-- ========================
+                         AÇÕES
+                         ======================== -->
+
+                    <td class="acoes">
+
+
+                        <!-- EDITAR -->
+
+                        <a
+                                [routerLink]="[
+                        '/criancas',
+                        crianca.id,
+                        'editar'
+                      ]"
+                                class="botao-acao editar"
+                                title="Editar ficha"
+                                aria-label="Editar ficha">
+
+                            <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true">
+
+                                <path d="M12 20h9"></path>
+
+                                <path
+                                        d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z">
+                                </path>
+
+                            </svg>
+
+                        </a>
+
+
+                        <!-- VISUALIZAR FICHA -->
+
+                        <a
+                                [routerLink]="[
+                        '/p',
+                        crianca.publicToken
+                      ]"
+                                class="botao-acao visualizar"
+                                title="Visualizar ficha pública"
+                                aria-label="Visualizar ficha pública">
+
+                            <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true">
+
+                                <path
+                                        d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z">
+                                </path>
+
+                                <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="3">
+                                </circle>
+
+                            </svg>
+
+                        </a>
+
+
+                        <!-- GERENCIAR DISPOSITIVOS NFC -->
+
+                        <a
+                                [routerLink]="[
+                        '/criancas',
+                        crianca.id,
+                        'nfcs'
+                      ]"
+                                class="botao-acao nfc"
+                                title="Gerenciar dispositivos NFC"
+                                aria-label="Gerenciar dispositivos NFC">
+
+                            <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true">
+
+                                <path
+                                        d="M6.5 6.5a8 8 0 0 1 11 0">
+                                </path>
+
+                                <path
+                                        d="M9 9a4.5 4.5 0 0 1 6 0">
+                                </path>
+
+                                <path
+                                        d="M11 11a1.5 1.5 0 0 1 2 0">
+                                </path>
+
+                                <circle
+                                        cx="12"
+                                        cy="15"
+                                        r="1">
+                                </circle>
+
+                            </svg>
+
+                        </a>
+
+
+                        <!-- EXCLUIR -->
+
+                        <button
+                                type="button"
+                                class="botao-acao excluir"
+                                title="Excluir ficha"
+                                aria-label="Excluir ficha"
+                                (click)="excluir(
+                        crianca.id,
+                        crianca.fullName
+                      )">
+
+                            <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true">
+
+                                <path d="M3 6h18"></path>
+
+                                <path d="M8 6V4h8v2"></path>
+
+                                <path d="M19 6l-1 14H6L5 6"></path>
+
+                                <path d="M10 11v5"></path>
+
+                                <path d="M14 11v5"></path>
+
+                            </svg>
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        }
+
+        }
+
+    </main>
+
+
+    <!-- ========================================
+         RODAPÉ
+         ======================================== -->
+
+    <footer class="rodape">
+
+    <span>
+      PW2M
+    </span>
+
+        <span class="separador">
+      •
+    </span>
+
+        <span>
+      Sistema de Localização NFC para Crianças
+    </span>
+
+    </footer>
+
+</div>
